@@ -1,47 +1,51 @@
 {
-  "name": "ccxt",
-  "version": "1.17.40",
-  "description": "A JavaScript / Python / PHP cryptocurrency trading library with support for 100+ exchanges",
-  "main": "./ccxt.js",
-  "unpkg": "build/ccxt.browser.js",
-  "engines": {
-    "node": ">=7.6.0"
+  "_from": "ccxt@^1.17.11",
+  "_id": "ccxt@1.17.40",
+  "_inBundle": false,
+  "_integrity": "sha512-Ee2y/2C0JB+61mNYm9WZm0Cp1ADfOwf28yycIJfdfBZqhHJFR+XYqHcJL9TpJqNJhKdPFsgMCx08xgkt2L14YQ==",
+  "_location": "/ccxt",
+  "_phantomChildren": {
+    "request": "2.85.0",
+    "web3-bzz": "1.0.0-beta.34",
+    "web3-core": "1.0.0-beta.34",
+    "web3-eth": "1.0.0-beta.34",
+    "web3-eth-personal": "1.0.0-beta.34",
+    "web3-net": "1.0.0-beta.34",
+    "web3-shh": "1.0.0-beta.34",
+    "web3-utils": "1.0.0-beta.34"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ccxt/ccxt.git"
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "ccxt@^1.17.11",
+    "name": "ccxt",
+    "escapedName": "ccxt",
+    "rawSpec": "^1.17.11",
+    "saveSpec": null,
+    "fetchSpec": "^1.17.11"
   },
-  "readme": "README.md",
-  "scripts": {
-    "build": "npm run export-exchanges && npm run vss && npm run check-js-syntax && npm run browserify && npm run transpile && npm run qa && npm run pandoc-all && npm run update-badges",
-    "test": "npm run build && node run-tests",
-    "fast-test": "node run-tests --js",
-    "test-base": "npm run test-js-base && npm run test-python-base && npm run test-php-base",
-    "test-js-base": "mocha js/test/base/test.base.js --reporter ololog/reporter",
-    "test-python-base": "python python/test/test_decimal_to_precision.py",
-    "test-php-base": "php -f php/test/decimal_to_precision.php",
-    "export-exchanges": "node export-exchanges",
-    "update-badges": "node update-badges",
-    "convert-md-2-rst": "bash ./convert-md-2-rst",
-    "transpile": "node transpile",
-    "vss": "node vss",
-    "qa": "npm run check-python-syntax && npm run check-php-syntax",
-    "lint": "eslint",
-    "check-js-syntax": "eslint 'js/*.js'",
-    "check-python-syntax": "cd python && tox -e qa && cd ..",
-    "check-php-syntax": "php -f php/test/syntax.php",
-    "browserify": "browserify ./ccxt.browser.js > ./build/ccxt.browser.js",
-    "pandoc-all": "npm run pandoc-python-readme && npm run pandoc-doc-readme && npm run pandoc-doc-faq && npm run pandoc-doc-manual && npm run pandoc-doc-install && npm run pandoc-doc-exchanges && npm run pandoc-doc-exchanges-by-country",
-    "pandoc-python-readme": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=python/README.rst README.md",
-    "pandoc-doc-readme": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/README.rst README.md",
-    "pandoc-doc-faq": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/FAQ.rst wiki/FAQ.md",
-    "pandoc-doc-manual": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/manual.rst wiki/Manual.md",
-    "pandoc-doc-install": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/install.rst wiki/Install.md",
-    "pandoc-doc-exchanges": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/exchanges.rst wiki/Exchange-Markets.md",
-    "pandoc-doc-exchanges-by-country": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/exchanges-by-country.rst wiki/Exchange-Markets-By-Country.md",
-    "postinstall": "opencollective postinstall && node postinstall.js"
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/ccxt/-/ccxt-1.17.40.tgz",
+  "_shasum": "b2964f98bf478216e8ab70c06b518f8b13b698d9",
+  "_spec": "ccxt@^1.17.11",
+  "_where": "/Users/yeshuagarwal/WebstormProjects/coinally-backend-price",
+  "author": {
+    "name": "Igor Kroitor",
+    "email": "igor.kroitor@gmail.com",
+    "url": "https://github.com/kroitor"
   },
-  "types": "./ccxt.d.ts",
+  "bugs": {
+    "url": "https://github.com/ccxt-dev/ccxt/issues"
+  },
+  "bundleDependencies": false,
+  "collective": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/ccxt",
+    "logo": "https://opencollective.com/ccxt/logo.txt"
+  },
   "dependencies": {
     "bignumber.js": "7.2.1",
     "cloudscraper": "1.4.1",
@@ -53,6 +57,8 @@
     "qs": "6.5.1",
     "web3": "1.0.0-beta.34"
   },
+  "deprecated": false,
+  "description": "A JavaScript / Python / PHP cryptocurrency trading library with support for 100+ exchanges",
   "devDependencies": {
     "ansicolor": "^1.1.71",
     "as-table": "^1.0.31",
@@ -68,14 +74,8 @@
     "nyc": "^11.4.1",
     "ololog": "^1.1.110"
   },
-  "author": {
-    "name": "Igor Kroitor",
-    "email": "igor.kroitor@gmail.com",
-    "url": "https://github.com/kroitor"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ccxt-dev/ccxt/issues"
+  "engines": {
+    "node": ">=7.6.0"
   },
   "homepage": "https://ccxt.trade",
   "keywords": [
@@ -297,9 +297,43 @@
     "Zaif",
     "ZB"
   ],
-  "collective": {
-    "type": "opencollective",
-    "url": "https://opencollective.com/ccxt",
-    "logo": "https://opencollective.com/ccxt/logo.txt"
-  }
+  "license": "MIT",
+  "main": "./ccxt.js",
+  "name": "ccxt",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ccxt/ccxt.git"
+  },
+  "scripts": {
+    "browserify": "browserify ./ccxt.browser.js > ./build/ccxt.browser.js",
+    "build": "npm run export-exchanges && npm run vss && npm run check-js-syntax && npm run browserify && npm run transpile && npm run qa && npm run pandoc-all && npm run update-badges",
+    "check-js-syntax": "eslint 'js/*.js'",
+    "check-php-syntax": "php -f php/test/syntax.php",
+    "check-python-syntax": "cd python && tox -e qa && cd ..",
+    "convert-md-2-rst": "bash ./convert-md-2-rst",
+    "export-exchanges": "node export-exchanges",
+    "fast-test": "node run-tests --js",
+    "lint": "eslint",
+    "pandoc-all": "npm run pandoc-python-readme && npm run pandoc-doc-readme && npm run pandoc-doc-faq && npm run pandoc-doc-manual && npm run pandoc-doc-install && npm run pandoc-doc-exchanges && npm run pandoc-doc-exchanges-by-country",
+    "pandoc-doc-exchanges": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/exchanges.rst wiki/Exchange-Markets.md",
+    "pandoc-doc-exchanges-by-country": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/exchanges-by-country.rst wiki/Exchange-Markets-By-Country.md",
+    "pandoc-doc-faq": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/FAQ.rst wiki/FAQ.md",
+    "pandoc-doc-install": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/install.rst wiki/Install.md",
+    "pandoc-doc-manual": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/manual.rst wiki/Manual.md",
+    "pandoc-doc-readme": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=doc/README.rst README.md",
+    "pandoc-python-readme": "pandoc --wrap=preserve --columns=10000 --from=markdown --to=rst --output=python/README.rst README.md",
+    "postinstall": "opencollective postinstall && node postinstall.js",
+    "qa": "npm run check-python-syntax && npm run check-php-syntax",
+    "test": "npm run build && node run-tests",
+    "test-base": "npm run test-js-base && npm run test-python-base && npm run test-php-base",
+    "test-js-base": "mocha js/test/base/test.base.js --reporter ololog/reporter",
+    "test-php-base": "php -f php/test/decimal_to_precision.php",
+    "test-python-base": "python python/test/test_decimal_to_precision.py",
+    "transpile": "node transpile",
+    "update-badges": "node update-badges",
+    "vss": "node vss"
+  },
+  "types": "./ccxt.d.ts",
+  "unpkg": "build/ccxt.browser.js",
+  "version": "1.17.40"
 }
