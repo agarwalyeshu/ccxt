@@ -3,6 +3,14 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
+const util = require('../../../lib/utils');
+/*
+edited :
+    - cache load market via redis
+    - deposits
+    - withdraws
+    - getAllOrders
+ */
 const { ExchangeError, ExchangeNotAvailable, AuthenticationError, InvalidOrder, InsufficientFunds, OrderNotFound, DDoSProtection, PermissionDenied, AddressPending } = require ('./base/errors');
 
 //  ---------------------------------------------------------------------------
@@ -29,6 +37,9 @@ module.exports = class bittrex extends Exchange {
                 'fetchOpenOrders': true,
                 'fetchTickers': true,
                 'withdraw': true,
+                'fetchWithdrawals': true,
+                'fetchDeposits': true
+
             },
             'timeframes': {
                 '1m': 'oneMin',
@@ -176,47 +187,53 @@ module.exports = class bittrex extends Exchange {
     }
 
     async fetchMarkets () {
-        let response = await this.v2GetMarketsGetMarketSummaries ();
+      let cacheData = await util.saveGetDataFromRedis(this.id + '|markets', 10 * 60);
+      if (cacheData) return cacheData;
+      else {
+        let response = await
+        this.v2GetMarketsGetMarketSummaries();
         let result = [];
         for (let i = 0; i < response['result'].length; i++) {
-            let market = response['result'][i]['Market'];
-            let id = market['MarketName'];
-            let baseId = market['MarketCurrency'];
-            let quoteId = market['BaseCurrency'];
-            let base = this.commonCurrencyCode (baseId);
-            let quote = this.commonCurrencyCode (quoteId);
-            let symbol = base + '/' + quote;
-            let pricePrecision = 8;
-            if (quote in this.options['pricePrecisionByCode'])
-                pricePrecision = this.options['pricePrecisionByCode'][quote];
-            let precision = {
-                'amount': 8,
-                'price': pricePrecision,
-            };
-            let active = market['IsActive'] || market['IsActive'] === 'true';
-            result.push ({
-                'id': id,
-                'symbol': symbol,
-                'base': base,
-                'quote': quote,
-                'baseId': baseId,
-                'quoteId': quoteId,
-                'active': active,
-                'info': market,
-                'precision': precision,
-                'limits': {
-                    'amount': {
-                        'min': market['MinTradeSize'],
-                        'max': undefined,
-                    },
-                    'price': {
-                        'min': Math.pow (10, -precision['price']),
-                        'max': undefined,
-                    },
-                },
-            });
+          let market = response['result'][i]['Market'];
+          let id = market['MarketName'];
+          let baseId = market['MarketCurrency'];
+          let quoteId = market['BaseCurrency'];
+          let base = this.commonCurrencyCode(baseId);
+          let quote = this.commonCurrencyCode(quoteId);
+          let symbol = base + '/' + quote;
+          let pricePrecision = 8;
+          if (quote in this.options['pricePrecisionByCode'])
+            pricePrecision = this.options['pricePrecisionByCode'][quote];
+          let precision = {
+            'amount': 8,
+            'price': pricePrecision,
+          };
+          let active = market['IsActive'] || market['IsActive'] === 'true';
+          result.push({
+            'id': id,
+            'symbol': symbol,
+            'base': base,
+            'quote': quote,
+            'baseId': baseId,
+            'quoteId': quoteId,
+            'active': active,
+            'info': market,
+            'precision': precision,
+            'limits': {
+              'amount': {
+                'min': market['MinTradeSize'],
+                'max': undefined,
+              },
+              'price': {
+                'min': Math.pow(10, -precision['price']),
+                'max': undefined,
+              },
+            },
+          });
         }
+        await util.saveGetDataFromRedis(this.id + '|markets', null, result)
         return result;
+      }
     }
 
     async fetchBalance (params = {}) {
@@ -662,6 +679,56 @@ module.exports = class bittrex extends Exchange {
             return this.filterBySymbol (orders, symbol);
         return orders;
     }
+
+    async fetchDeposits(params = {}) {
+    let responseData = [];
+    try {
+      let response = await this.accountGetDeposithistory(this.extend({}, params));
+      if (response && response.result) {
+        if (response.result.length > 0) {
+          for (let deposit of response.result) {
+            responseData.push({
+              id: deposit.TxId,
+              symbol: deposit.Currency,
+              amount: deposit.Amount,
+              datetime: deposit.LastUpdated,
+              address: deposit.CryptoAddress,
+              status: true
+            })
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e)
+    }
+    return responseData;
+  }
+
+    async fetchWithdrawals(params = {}) {
+    let responseData = [];
+    try {
+      let response = await this.accountGetWithdrawalhistory(this.extend({}, params));
+      if (response && response.result) {
+        if (response.result.length > 0) {
+          for (let withdrawal of response.result) {
+            responseData.push({
+              id: withdrawal.PaymentUuid,
+              symbol: withdrawal.Currency,
+              amount: withdrawal.Amount,
+              datetime: withdrawal.Opened,
+              address: withdrawal.Address,
+              transactionID: withdrawal.TxId,
+              transactionCost: withdrawal.TxCost,
+              status: (withdrawal.Canceled ? true : false)
+            })
+          }
+        }
+      }
+    } catch (e) {
+      console.log(e)
+    }
+    return responseData;
+  }
 
     async fetchDepositAddress (code, params = {}) {
         await this.loadMarkets ();

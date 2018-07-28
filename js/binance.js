@@ -4,6 +4,7 @@
 
 const Exchange = require ('./base/Exchange');
 const { ExchangeError, ExchangeNotAvailable, InsufficientFunds, OrderNotFound, InvalidOrder, DDoSProtection, InvalidNonce, AuthenticationError } = require ('./base/errors');
+const util = require('../../../lib/utils');
 
 //  ---------------------------------------------------------------------------
 
@@ -296,33 +297,36 @@ module.exports = class binance extends Exchange {
     }
 
     async fetchMarkets () {
-        let response = await this.publicGetExchangeInfo ();
-        if (this.options['adjustForTimeDifference'])
-            await this.loadTimeDifference ();
-        let markets = response['symbols'];
-        let result = [];
-        for (let i = 0; i < markets.length; i++) {
-            let market = markets[i];
-            let id = market['symbol'];
-            // "123456" is a "test symbol/market"
-            if (id === '123456')
+       let cacheData = await util.saveGetDataFromRedis(this.id + '|markets', 10 * 60);
+       if (cacheData) return cacheData;
+       else {
+          let response = await this.publicGetExchangeInfo();
+          if (this.options['adjustForTimeDifference'])
+             await this.loadTimeDifference();
+          let markets = response['symbols'];
+          let result = [];
+          for (let i = 0; i < markets.length; i++) {
+             let market = markets[i];
+             let id = market['symbol'];
+             // "123456" is a "test symbol/market"
+             if (id === '123456')
                 continue;
-            let baseId = market['baseAsset'];
-            let quoteId = market['quoteAsset'];
-            let base = this.commonCurrencyCode (baseId);
-            let quote = this.commonCurrencyCode (quoteId);
-            let symbol = base + '/' + quote;
-            let filters = this.indexBy (market['filters'], 'filterType');
-            let precision = {
+             let baseId = market['baseAsset'];
+             let quoteId = market['quoteAsset'];
+             let base = this.commonCurrencyCode(baseId);
+             let quote = this.commonCurrencyCode(quoteId);
+             let symbol = base + '/' + quote;
+             let filters = this.indexBy(market['filters'], 'filterType');
+             let precision = {
                 'base': market['baseAssetPrecision'],
                 'quote': market['quotePrecision'],
                 'amount': market['baseAssetPrecision'],
                 'price': market['quotePrecision'],
-            };
-            let active = (market['status'] === 'TRADING');
-            // lot size is deprecated as of 2018.02.06
-            let lot = -1 * Math.log10 (precision['amount']);
-            let entry = {
+             };
+             let active = (market['status'] === 'TRADING');
+             // lot size is deprecated as of 2018.02.06
+             let lot = -1 * Math.log10(precision['amount']);
+             let entry = {
                 'id': id,
                 'symbol': symbol,
                 'base': base,
@@ -334,44 +338,50 @@ module.exports = class binance extends Exchange {
                 'active': active,
                 'precision': precision,
                 'limits': {
-                    'amount': {
-                        'min': Math.pow (10, -precision['amount']),
-                        'max': undefined,
-                    },
-                    'price': {
-                        'min': Math.pow (10, -precision['price']),
-                        'max': undefined,
-                    },
-                    'cost': {
-                        'min': lot,
-                        'max': undefined,
-                    },
+                   'amount': {
+                      'min': Math.pow(10, -precision['amount']),
+                      'max': undefined,
+                   },
+                   'price': {
+                      'min': Math.pow(10, -precision['price']),
+                      'max': undefined,
+                   },
+                   'cost': {
+                      'min': lot,
+                      'max': undefined,
+                   },
                 },
-            };
-            if ('PRICE_FILTER' in filters) {
+             };
+             if ('PRICE_FILTER' in filters) {
                 let filter = filters['PRICE_FILTER'];
-                entry['precision']['price'] = this.precisionFromString (filter['tickSize']);
+                entry['precision']['price'] = this.precisionFromString(
+                     filter['tickSize']);
                 entry['limits']['price'] = {
-                    'min': this.safeFloat (filter, 'minPrice'),
-                    'max': this.safeFloat (filter, 'maxPrice'),
+                   'min': this.safeFloat(filter, 'minPrice'),
+                   'max': this.safeFloat(filter, 'maxPrice'),
                 };
-            }
-            if ('LOT_SIZE' in filters) {
+             }
+             if ('LOT_SIZE' in filters) {
                 let filter = filters['LOT_SIZE'];
-                entry['precision']['amount'] = this.precisionFromString (filter['stepSize']);
-                entry['lot'] = this.safeFloat (filter, 'stepSize'); // lot size is deprecated as of 2018.02.06
+                entry['precision']['amount'] = this.precisionFromString(
+                     filter['stepSize']);
+                entry['lot'] = this.safeFloat(filter, 'stepSize'); // lot size is deprecated as of 2018.02.06
                 entry['limits']['amount'] = {
-                    'min': this.safeFloat (filter, 'minQty'),
-                    'max': this.safeFloat (filter, 'maxQty'),
+                   'min': this.safeFloat(filter, 'minQty'),
+                   'max': this.safeFloat(filter, 'maxQty'),
                 };
-            }
-            if ('MIN_NOTIONAL' in filters) {
-                entry['limits']['cost']['min'] = parseFloat (filters['MIN_NOTIONAL']['minNotional']);
-            }
-            result.push (entry);
-        }
-        return result;
+             }
+             if ('MIN_NOTIONAL' in filters) {
+                entry['limits']['cost']['min'] = parseFloat(
+                     filters['MIN_NOTIONAL']['minNotional']);
+             }
+             result.push(entry);
+          }
+          await util.saveGetDataFromRedis(this.id + '|markets', null, result);
+          return result;
+       }
     }
+
 
     calculateFee (symbol, type, side, amount, price, takerOrMaker = 'taker', params = {}) {
         let market = this.markets[symbol];

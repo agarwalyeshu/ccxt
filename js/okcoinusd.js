@@ -4,7 +4,7 @@
 
 const Exchange = require ('./base/Exchange');
 const { ExchangeError, DDoSProtection, InsufficientFunds, InvalidOrder, OrderNotFound, AuthenticationError } = require ('./base/errors');
-
+const util = require('../../../lib/utils');
 //  ---------------------------------------------------------------------------
 
 module.exports = class okcoinusd extends Exchange {
@@ -176,28 +176,31 @@ module.exports = class okcoinusd extends Exchange {
     }
 
     async fetchMarkets () {
-        let response = await this.webGetSpotMarketsProducts ();
-        let markets = response['data'];
-        let result = [];
-        for (let i = 0; i < markets.length; i++) {
-            let id = markets[i]['symbol'];
-            let [ baseId, quoteId ] = id.split ('_');
-            let baseIdUppercase = baseId.toUpperCase ();
-            let quoteIdUppercase = quoteId.toUpperCase ();
-            let base = this.commonCurrencyCode (baseIdUppercase);
-            let quote = this.commonCurrencyCode (quoteIdUppercase);
-            let symbol = base + '/' + quote;
-            let precision = {
+       let cacheData = await util.saveGetDataFromRedis(this.id + '|markets', 10 * 60);
+       if (cacheData) return cacheData;
+       else {
+          let response = await this.webGetSpotMarketsProducts();
+          let markets = response['data'];
+          let result = [];
+          for (let i = 0; i < markets.length; i++) {
+             let id = markets[i]['symbol'];
+             let [baseId, quoteId] = id.split('_');
+             let baseIdUppercase = baseId.toUpperCase();
+             let quoteIdUppercase = quoteId.toUpperCase();
+             let base = this.commonCurrencyCode(baseIdUppercase);
+             let quote = this.commonCurrencyCode(quoteIdUppercase);
+             let symbol = base + '/' + quote;
+             let precision = {
                 'amount': markets[i]['maxSizeDigit'],
                 'price': markets[i]['maxPriceDigit'],
-            };
-            let lot = Math.pow (10, -precision['amount']);
-            let minAmount = markets[i]['minTradeSize'];
-            let minPrice = Math.pow (10, -precision['price']);
-            let active = (markets[i]['online'] !== 0);
-            let baseNumericId = markets[i]['baseCurrency'];
-            let quoteNumericId = markets[i]['quoteCurrency'];
-            let market = this.extend (this.fees['trading'], {
+             };
+             let lot = Math.pow(10, -precision['amount']);
+             let minAmount = markets[i]['minTradeSize'];
+             let minPrice = Math.pow(10, -precision['price']);
+             let active = (markets[i]['online'] !== 0);
+             let baseNumericId = markets[i]['baseCurrency'];
+             let quoteNumericId = markets[i]['quoteCurrency'];
+             let market = this.extend(this.fees['trading'], {
                 'id': id,
                 'symbol': symbol,
                 'base': base,
@@ -214,39 +217,42 @@ module.exports = class okcoinusd extends Exchange {
                 'active': active,
                 'precision': precision,
                 'limits': {
-                    'amount': {
-                        'min': minAmount,
-                        'max': undefined,
-                    },
-                    'price': {
-                        'min': minPrice,
-                        'max': undefined,
-                    },
-                    'cost': {
-                        'min': minAmount * minPrice,
-                        'max': undefined,
-                    },
+                   'amount': {
+                      'min': minAmount,
+                      'max': undefined,
+                   },
+                   'price': {
+                      'min': minPrice,
+                      'max': undefined,
+                   },
+                   'cost': {
+                      'min': minAmount * minPrice,
+                      'max': undefined,
+                   },
                 },
-            });
-            result.push (market);
-            if ((this.has['futures']) && (market['base'] in this.options['futures'])) {
+             });
+             result.push(market);
+             if ((this.has['futures']) &&
+                  (market['base'] in this.options['futures'])) {
                 let fiats = this.options['fiats'];
                 for (let j = 0; j < fiats.length; j++) {
-                    const fiat = fiats[j];
-                    const lowercaseFiat = fiat.toLowerCase ();
-                    result.push (this.extend (market, {
-                        'quote': fiat,
-                        'symbol': market['base'] + '/' + fiat,
-                        'id': market['base'].toLowerCase () + '_' + lowercaseFiat,
-                        'quoteId': lowercaseFiat,
-                        'type': 'future',
-                        'spot': false,
-                        'future': true,
-                    }));
+                   const fiat = fiats[j];
+                   const lowercaseFiat = fiat.toLowerCase();
+                   result.push(this.extend(market, {
+                      'quote': fiat,
+                      'symbol': market['base'] + '/' + fiat,
+                      'id': market['base'].toLowerCase() + '_' + lowercaseFiat,
+                      'quoteId': lowercaseFiat,
+                      'type': 'future',
+                      'spot': false,
+                      'future': true,
+                   }));
                 }
-            }
-        }
-        return result;
+             }
+          }
+          await util.saveGetDataFromRedis(this.id + '|markets', null, result)
+          return result;
+       }
     }
 
     async fetchOrderBook (symbol, limit = undefined, params = {}) {
