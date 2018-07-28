@@ -2,13 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="13c05e06-a382-453c-891b-16b9dddb008a" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change beforePath="$PROJECT_DIR$/js/binance.js" afterPath="$PROJECT_DIR$/js/binance.js" />
       <change beforePath="$PROJECT_DIR$/js/bittrex.js" afterPath="$PROJECT_DIR$/js/bittrex.js" />
       <change beforePath="$PROJECT_DIR$/js/okcoinusd.js" afterPath="$PROJECT_DIR$/js/okcoinusd.js" />
+      <change beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -25,30 +22,30 @@
       <file leaf-file-name="bittrex.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/bittrex.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="287">
-              <caret line="109" column="37" lean-forward="true" selection-start-line="109" selection-start-column="37" selection-end-line="109" selection-end-column="37" />
+            <state relative-caret-position="347">
+              <caret line="26" column="32" lean-forward="false" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
               <folding>
-                <element signature="e#8663#9527#0" expanded="false" />
-                <element signature="e#9595#10347#0" expanded="false" />
-                <element signature="e#10394#12042#0" expanded="false" />
-                <element signature="e#12084#13904#0" expanded="false" />
-                <element signature="e#13964#14654#0" expanded="false" />
-                <element signature="e#14700#15009#0" expanded="false" />
-                <element signature="e#15054#15789#0" expanded="false" />
-                <element signature="e#15873#16367#0" expanded="false" />
-                <element signature="e#16468#16710#0" expanded="false" />
-                <element signature="e#16811#17407#0" expanded="false" />
-                <element signature="e#17507#17973#0" expanded="false" />
-                <element signature="e#18058#18987#0" expanded="false" />
-                <element signature="e#19012#19042#0" expanded="false" />
-                <element signature="e#19104#19447#0" expanded="false" />
-                <element signature="e#19470#19654#0" expanded="false" />
-                <element signature="e#19699#24200#0" expanded="false" />
-                <element signature="e#24261#25086#0" expanded="false" />
-                <element signature="e#25188#25727#0" expanded="false" />
-                <element signature="e#25766#26398#0" expanded="false" />
-                <element signature="e#26440#27217#0" expanded="false" />
-                <element signature="e#27269#28169#0" expanded="false" />
+                <element signature="e#8661#9525#0" expanded="false" />
+                <element signature="e#9593#10345#0" expanded="false" />
+                <element signature="e#10392#12040#0" expanded="false" />
+                <element signature="e#12082#13902#0" expanded="false" />
+                <element signature="e#13962#14652#0" expanded="false" />
+                <element signature="e#14698#15007#0" expanded="false" />
+                <element signature="e#15052#15787#0" expanded="false" />
+                <element signature="e#15871#16365#0" expanded="false" />
+                <element signature="e#16466#16708#0" expanded="false" />
+                <element signature="e#16809#17405#0" expanded="false" />
+                <element signature="e#17505#17971#0" expanded="false" />
+                <element signature="e#18056#18985#0" expanded="false" />
+                <element signature="e#19010#19040#0" expanded="false" />
+                <element signature="e#19102#19445#0" expanded="false" />
+                <element signature="e#19468#19652#0" expanded="false" />
+                <element signature="e#19697#24198#0" expanded="false" />
+                <element signature="e#24259#25084#0" expanded="false" />
+                <element signature="e#25186#25725#0" expanded="false" />
+                <element signature="e#25764#26396#0" expanded="false" />
+                <element signature="e#26438#27215#0" expanded="false" />
+                <element signature="e#27267#28167#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -57,8 +54,8 @@
       <file leaf-file-name="binance.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/binance.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="269">
-              <caret line="301" column="13" lean-forward="true" selection-start-line="299" selection-start-column="5" selection-end-line="301" selection-end-column="13" />
+            <state relative-caret-position="391">
+              <caret line="16" column="27" lean-forward="false" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
               <folding />
             </state>
           </provider>
@@ -67,20 +64,30 @@
       <file leaf-file-name="okcoinusd.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/js/okcoinusd.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4002">
-              <caret line="174" column="11" lean-forward="true" selection-start-line="174" selection-start-column="11" selection-end-line="174" selection-end-column="11" />
+            <state relative-caret-position="368">
+              <caret line="16" column="27" lean-forward="false" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="27" />
               <folding>
-                <element signature="e#7754#10830#0" expanded="false" />
+                <element signature="e#7752#10828#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.gitignore">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="0">
               <caret line="0" column="13" lean-forward="true" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="544">
+              <caret line="339" column="0" lean-forward="true" selection-start-line="339" selection-start-column="0" selection-end-line="339" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -93,8 +100,8 @@
       <find>withdraws</find>
       <find>withdraw</find>
       <find>loadma</find>
-      <find>util</find>
       <find>fetchma</find>
+      <find>util</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -108,10 +115,11 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/js/bittrex.js" />
-        <option value="$PROJECT_DIR$/js/binance.js" />
-        <option value="$PROJECT_DIR$/js/okcoinusd.js" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/js/okcoinusd.js" />
+        <option value="$PROJECT_DIR$/js/binance.js" />
+        <option value="$PROJECT_DIR$/js/bittrex.js" />
+        <option value="$PROJECT_DIR$/package.json" />
       </list>
     </option>
   </component>
@@ -230,15 +238,16 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1532787796070</updated>
-      <workItem from="1532787797284" duration="1496000" />
+      <workItem from="1532787797284" duration="2505000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1496000" />
+    <option name="totallyTimeSpent" value="2505000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cargo" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -274,58 +283,66 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/js/bittrex.js">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="287">
-          <caret line="109" column="37" lean-forward="true" selection-start-line="109" selection-start-column="37" selection-end-line="109" selection-end-column="37" />
-          <folding>
-            <element signature="e#8663#9527#0" expanded="false" />
-            <element signature="e#9595#10347#0" expanded="false" />
-            <element signature="e#10394#12042#0" expanded="false" />
-            <element signature="e#12084#13904#0" expanded="false" />
-            <element signature="e#13964#14654#0" expanded="false" />
-            <element signature="e#14700#15009#0" expanded="false" />
-            <element signature="e#15054#15789#0" expanded="false" />
-            <element signature="e#15873#16367#0" expanded="false" />
-            <element signature="e#16468#16710#0" expanded="false" />
-            <element signature="e#16811#17407#0" expanded="false" />
-            <element signature="e#17507#17973#0" expanded="false" />
-            <element signature="e#18058#18987#0" expanded="false" />
-            <element signature="e#19012#19042#0" expanded="false" />
-            <element signature="e#19104#19447#0" expanded="false" />
-            <element signature="e#19470#19654#0" expanded="false" />
-            <element signature="e#19699#24200#0" expanded="false" />
-            <element signature="e#24261#25086#0" expanded="false" />
-            <element signature="e#25188#25727#0" expanded="false" />
-            <element signature="e#25766#26398#0" expanded="false" />
-            <element signature="e#26440#27217#0" expanded="false" />
-            <element signature="e#27269#28169#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/js/binance.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="269">
-          <caret line="301" column="13" lean-forward="true" selection-start-line="299" selection-start-column="5" selection-end-line="301" selection-end-column="13" />
+        <state relative-caret-position="0">
+          <caret line="0" column="13" lean-forward="true" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/okcoinusd.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4002">
-          <caret line="174" column="11" lean-forward="true" selection-start-line="174" selection-start-column="11" selection-end-line="174" selection-end-column="11" />
+        <state relative-caret-position="368">
+          <caret line="16" column="27" lean-forward="false" selection-start-line="16" selection-start-column="25" selection-end-line="16" selection-end-column="27" />
           <folding>
-            <element signature="e#7754#10830#0" expanded="false" />
+            <element signature="e#7752#10828#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/js/binance.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="13" lean-forward="true" selection-start-line="0" selection-start-column="13" selection-end-line="0" selection-end-column="13" />
+        <state relative-caret-position="391">
+          <caret line="16" column="27" lean-forward="false" selection-start-line="16" selection-start-column="27" selection-end-line="16" selection-end-column="27" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/bittrex.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="347">
+          <caret line="26" column="32" lean-forward="false" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
+          <folding>
+            <element signature="e#8661#9525#0" expanded="false" />
+            <element signature="e#9593#10345#0" expanded="false" />
+            <element signature="e#10392#12040#0" expanded="false" />
+            <element signature="e#12082#13902#0" expanded="false" />
+            <element signature="e#13962#14652#0" expanded="false" />
+            <element signature="e#14698#15007#0" expanded="false" />
+            <element signature="e#15052#15787#0" expanded="false" />
+            <element signature="e#15871#16365#0" expanded="false" />
+            <element signature="e#16466#16708#0" expanded="false" />
+            <element signature="e#16809#17405#0" expanded="false" />
+            <element signature="e#17505#17971#0" expanded="false" />
+            <element signature="e#18056#18985#0" expanded="false" />
+            <element signature="e#19010#19040#0" expanded="false" />
+            <element signature="e#19102#19445#0" expanded="false" />
+            <element signature="e#19468#19652#0" expanded="false" />
+            <element signature="e#19697#24198#0" expanded="false" />
+            <element signature="e#24259#25084#0" expanded="false" />
+            <element signature="e#25186#25725#0" expanded="false" />
+            <element signature="e#25764#26396#0" expanded="false" />
+            <element signature="e#26438#27215#0" expanded="false" />
+            <element signature="e#27267#28167#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="544">
+          <caret line="339" column="0" lean-forward="true" selection-start-line="339" selection-start-column="0" selection-end-line="339" selection-end-column="0" />
           <folding />
         </state>
       </provider>
