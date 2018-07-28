@@ -3,7 +3,7 @@
 //  ---------------------------------------------------------------------------
 
 const Exchange = require ('./base/Exchange');
-const util = require('../../../lib/utils');
+const {redisRead, redisWrite} = require('../../../lib/utils');
 /*
 edited :
     - cache load market via redis
@@ -187,7 +187,7 @@ module.exports = class bittrex extends Exchange {
     }
 
     async fetchMarkets () {
-      let cacheData = await util.saveGetDataFromRedis(this.id + '|markets', 10 * 60);
+      let cacheData = await redisRead(this.id + '|markets', 10 * 60);
       if (cacheData) return cacheData;
       else {
         let response = await
@@ -231,7 +231,7 @@ module.exports = class bittrex extends Exchange {
             },
           });
         }
-        await util.saveGetDataFromRedis(this.id + '|markets', null, result)
+        await redisWrite(this.id + '|markets', result)
         return result;
       }
     }

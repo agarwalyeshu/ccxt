@@ -4,7 +4,7 @@
 
 const Exchange = require ('./base/Exchange');
 const { ExchangeError, DDoSProtection, InsufficientFunds, InvalidOrder, OrderNotFound, AuthenticationError } = require ('./base/errors');
-const util = require('../../../lib/utils');
+const {redisRead, redisWrite} = require('../../../lib/utils');
 //  ---------------------------------------------------------------------------
 
 module.exports = class okcoinusd extends Exchange {
@@ -176,7 +176,7 @@ module.exports = class okcoinusd extends Exchange {
     }
 
     async fetchMarkets () {
-       let cacheData = await util.saveGetDataFromRedis(this.id + '|markets', 10 * 60);
+       let cacheData = await redisRead(this.id + '|markets', 10 * 60);
        if (cacheData) return cacheData;
        else {
           let response = await this.webGetSpotMarketsProducts();
@@ -250,7 +250,7 @@ module.exports = class okcoinusd extends Exchange {
                 }
              }
           }
-          await util.saveGetDataFromRedis(this.id + '|markets', null, result)
+          await redisWrite(this.id + '|markets', result)
           return result;
        }
     }
