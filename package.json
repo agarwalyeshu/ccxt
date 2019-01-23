@@ -1,37 +1,28 @@
 {
-  "_from": "ccxt@^1.17.11",
-  "_id": "ccxt@1.17.40",
+  "_from": "ccxt",
+  "_id": "ccxt@1.18.144",
   "_inBundle": false,
-  "_integrity": "sha512-Ee2y/2C0JB+61mNYm9WZm0Cp1ADfOwf28yycIJfdfBZqhHJFR+XYqHcJL9TpJqNJhKdPFsgMCx08xgkt2L14YQ==",
+  "_integrity": "sha512-eyqCKAFQ3306rCO+QftLipRCwukRZ7qDaZTVqTPoN0Q4PV5G4gnYsZzuOmkiJQjhGO6XdhoEC3EGHU8NXaAC7Q==",
   "_location": "/ccxt",
-  "_phantomChildren": {
-    "request": "2.85.0",
-    "web3-bzz": "1.0.0-beta.34",
-    "web3-core": "1.0.0-beta.34",
-    "web3-eth": "1.0.0-beta.34",
-    "web3-eth-personal": "1.0.0-beta.34",
-    "web3-net": "1.0.0-beta.34",
-    "web3-shh": "1.0.0-beta.34",
-    "web3-utils": "1.0.0-beta.34"
-  },
+  "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "tag",
     "registry": true,
-    "raw": "ccxt@^1.17.11",
+    "raw": "ccxt",
     "name": "ccxt",
     "escapedName": "ccxt",
-    "rawSpec": "^1.17.11",
+    "rawSpec": "",
     "saveSpec": null,
-    "fetchSpec": "^1.17.11"
+    "fetchSpec": "latest"
   },
   "_requiredBy": [
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/ccxt/-/ccxt-1.17.40.tgz",
-  "_shasum": "b2964f98bf478216e8ab70c06b518f8b13b698d9",
-  "_spec": "ccxt@^1.17.11",
-  "_where": "/Users/yeshuagarwal/WebstormProjects/coinally-backend-price",
+  "_resolved": "https://registry.npmjs.org/ccxt/-/ccxt-1.18.144.tgz",
+  "_shasum": "48396d04b2b091aa68978e9b0335f412c0e5d65b",
+  "_spec": "ccxt",
+  "_where": "/Users/yeshuagarwal/WebstormProjects/testccxt",
   "author": {
     "name": "Igor Kroitor",
     "email": "igor.kroitor@gmail.com",
@@ -47,33 +38,28 @@
     "logo": "https://opencollective.com/ccxt/logo.txt"
   },
   "dependencies": {
-    "bignumber.js": "7.2.1",
-    "cloudscraper": "1.4.1",
+    "cached-path-relative": "1.0.2",
     "crypto-js": "3.1.9-1",
-    "ethereumjs-abi": "0.6.5",
-    "ethereumjs-util": "5.2.0",
-    "node-fetch" : "https://github.com/agarwalyeshu/node-fetch/tarball/master",
-    "fetch-ponyfill": "https://github.com/agarwalyeshu/fetch-ponyfill/tarball/master",
+    "fetch-ponyfill": "4.1.0",
     "opencollective": "1.0.3",
-    "qs": "6.5.1",
-    "web3": "1.0.0-beta.34"
+    "qs": "6.5.1"
   },
   "deprecated": false,
   "description": "A JavaScript / Python / PHP cryptocurrency trading library with support for 100+ exchanges",
   "devDependencies": {
-    "ansicolor": "^1.1.78",
-    "as-table": "^1.0.31",
-    "asciichart": "^1.5.7",
-    "browserify": "^14.5.0",
-    "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
-    "eslint": "^4.15.0",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-plugin-import": "^2.14.0",
-    "istanbul": "^0.4.5",
-    "mocha": "^5.2.0",
-    "nyc": "^11.4.1",
-    "ololog": "^1.1.114"
+    "ansicolor": "1.1.71",
+    "as-table": "1.0.31",
+    "asciichart": "1.5.7",
+    "browserify": "14.5.0",
+    "chai": "4.1.2",
+    "chai-as-promised": "7.1.1",
+    "eslint": "4.15.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "2.8.0",
+    "istanbul": "0.4.5",
+    "mocha": "5.2.0",
+    "nyc": "11.4.1",
+    "ololog": "1.1.110"
   },
   "engines": {
     "node": ">=7.6.0"
@@ -307,10 +293,12 @@
   },
   "scripts": {
     "browserify": "browserify ./ccxt.browser.js > ./build/ccxt.browser.js",
-    "build": "npm run export-exchanges && npm run vss && npm run check-js-syntax && npm run browserify && npm run transpile && npm run qa && npm run pandoc-all && npm run update-badges",
+    "build": "npm run build-without-docs && npm run pandoc-all && npm run update-badges",
+    "build-without-docs": "npm run export-exchanges && npm run vss && npm run check-js-syntax && npm run browserify && npm run transpile && npm run qa",
     "check-js-syntax": "eslint 'js/*.js'",
     "check-php-syntax": "php -f php/test/syntax.php",
     "check-python-syntax": "cd python && tox -e qa && cd ..",
+    "check-syntax": "npm run transpile && npm run check-js-syntax && npm run check-python-syntax && npm run check-php-syntax",
     "convert-md-2-rst": "bash ./convert-md-2-rst",
     "export-exchanges": "node export-exchanges",
     "fast-test": "node run-tests --js",
@@ -336,5 +324,5 @@
   },
   "types": "./ccxt.d.ts",
   "unpkg": "build/ccxt.browser.js",
-  "version": "1.17.41"
+  "version": "1.18.144"
 }

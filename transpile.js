@@ -65,12 +65,14 @@ const commonRegexes = [
     [ /\.parseTradesData\s/g, '.parse_trades_data'],
     [ /\.parseTrades\s/g, '.parse_trades'],
     [ /\.parseTrade\s/g, '.parse_trade'],
+    [ /\.parseTradingViewOHLCV\s/g, '.parse_trading_view_ohlcv'],
     [ /\.parseOrderBook\s/g, '.parse_order_book'],
     [ /\.parseBidsAsks\s/g, '.parse_bids_asks'],
     [ /\.parseBidAsk\s/g, '.parse_bid_ask'],
     [ /\.parseOrders\s/g, '.parse_orders'],
     [ /\.parseOrderStatus\s/g, '.parse_order_status'],
     [ /\.parseOrder\s/g, '.parse_order'],
+    [ /\.parseJson\s/g, '.parse_json'],
     [ /\.filterByArray\s/g, '.filter_by_array'],
     [ /\.filterBySymbolSinceLimit\s/g, '.filter_by_symbol_since_limit'],
     [ /\.filterBySinceLimit\s/g, '.filter_by_since_limit'],
@@ -103,9 +105,9 @@ const commonRegexes = [
     [ /\.decimalToPrecision\s/g, '.decimal_to_precision'],
     [ /\.priceToPrecision\s/g, '.price_to_precision'],
     [ /\.amountToPrecision\s/g, '.amount_to_precision'],
-    [ /\.amountToString\s/g, '.amount_to_string'],
     [ /\.amountToLots\s/g, '.amount_to_lots'],
     [ /\.feeToPrecision\s/g, '.fee_to_precision'],
+    [ /\.currencyToPrecision\s/g, '.currency_to_precision'],
     [ /\.costToPrecision\s/g, '.cost_to_precision'],
     [ /\.commonCurrencyCode\s/g, '.common_currency_code'],
     [ /\.loadFees\s/g, '.load_fees'],
@@ -122,10 +124,12 @@ const commonRegexes = [
     [ /\.throwExceptionOnError\s/g, '.throw_exception_on_error'],
     [ /\.handleErrors\s/g, '.handle_errors'],
     [ /\.checkRequiredCredentials\s/g, '.check_required_credentials'],
+    [ /\.checkRequiredDependencies\s/g, '.check_required_dependencies'],
     [ /\.checkAddress\s/g, '.check_address'],
     [ /\.convertTradingViewToOHLCV\s/g, '.convert_trading_view_to_ohlcv'],
     [ /\.convertOHLCVToTradingView\s/g, '.convert_ohlcv_to_trading_view'],
     [ /\.signBodyWithSecret\s/g, '.sign_body_with_secret'],
+    [ /\.isJsonEncodedObject\s/g, '.is_json_encoded_object'],
 ]
 
 // ----------------------------------------------------------------------------
@@ -134,12 +138,21 @@ const pythonRegexes = [
 
     [ /Array\.isArray\s*\(([^\)]+)\)/g, 'isinstance($1, list)' ],
     [ /([^\(\s]+)\s+instanceof\s+([^\)\s]+)/g, 'isinstance($1, $2)' ],
+
     [ /typeof\s+([^\s\[]+)(?:\s|\[(.+?)\])\s+\=\=\=?\s+\'undefined\'/g, '$1[$2] is None' ],
     [ /typeof\s+([^\s\[]+)(?:\s|\[(.+?)\])\s+\!\=\=?\s+\'undefined\'/g, '$1[$2] is not None' ],
     [ /typeof\s+([^\s]+)\s+\=\=\=?\s+\'undefined\'/g, '$1 is None' ],
     [ /typeof\s+([^\s]+)\s+\!\=\=?\s+\'undefined\'/g, '$1 is not None' ],
     [ /typeof\s+(.+?)\s+\=\=\=?\s+\'undefined\'/g, '$1 is None' ],
     [ /typeof\s+(.+?)\s+\!\=\=?\s+\'undefined\'/g, '$1 is not None' ],
+
+    [ /([^\s\[]+)(?:\s|\[(.+?)\])\s+\=\=\=?\s+undefined/g, '$1[$2] is None' ],
+    [ /([^\s\[]+)(?:\s|\[(.+?)\])\s+\!\=\=?\s+undefined/g, '$1[$2] is not None' ],
+    [ /([^\s]+)\s+\=\=\=?\s+undefined/g, '$1 is None' ],
+    [ /([^\s]+)\s+\!\=\=?\s+undefined/g, '$1 is not None' ],
+    [ /(.+?)\s+\=\=\=?\s+undefined/g, '$1 is None' ],
+    [ /(.+?)\s+\!\=\=?\s+undefined/g, '$1 is not None' ],
+
     [ /typeof\s+([^\s\[]+)(?:\s|\[(.+?)\])\s+\=\=\=?\s+\'string\'/g, 'isinstance($1[$2], basestring)' ],
     [ /typeof\s+([^\s\[]+)(?:\s|\[(.+?)\])\s+\!\=\=?\s+\'string\'/g, 'not isinstance($1[$2], basestring)' ],
     [ /typeof\s+([^\s]+)\s+\=\=\=?\s+\'string\'/g, 'isinstance($1, basestring)' ],
@@ -184,7 +197,7 @@ const pythonRegexes = [
     [ /\!([^\=])/g, 'not $1'],
     [ /([^\s]+)\.length/g, 'len($1)' ],
     [ /\.push\s*\(([\s\S]+?)\);/g, '.append($1);' ],
-    [ /^\s*}\s*$/gm, '' ],
+    [ /^(\s*}\s*$)+/gm, '' ],
     [ /;/g, '' ],
     [ /\.toUpperCase\s*/g, '.upper' ],
     [ /\.toLowerCase\s*/g, '.lower' ],
@@ -239,16 +252,26 @@ const python2Regexes = [
 const phpRegexes = [
     [ /\{([a-zA-Z0-9_]+?)\}/g, '<$1>' ], // resolve the "arrays vs url params" conflict (both are in {}-brackets)
     [ /Array\.isArray\s*\(([^\)]+)\)/g, "gettype ($1) === 'array' && count (array_filter (array_keys ($1), 'is_string')) == 0" ],
+
     [ /typeof\s+([^\s\[]+)(?:\s|\[(.+?)\])\s+\=\=\=?\s+\'undefined\'/g, '$1[$2] === null' ],
     [ /typeof\s+([^\s\[]+)(?:\s|\[(.+?)\])\s+\!\=\=?\s+\'undefined\'/g, '$1[$2] !== null' ],
     [ /typeof\s+([^\s]+)\s+\=\=\=?\s+\'undefined\'/g, '$1 === null' ],
     [ /typeof\s+([^\s]+)\s+\!\=\=?\s+\'undefined\'/g, '$1 !== null' ],
     [ /typeof\s+(.+?)\s+\=\=\=?\s+\'undefined\'/g, '$1 === null' ],
     [ /typeof\s+(.+?)\s+\!\=\=?\s+\'undefined\'/g, '$1 !== null' ],
+
+    [ /([^\s\[]+)(?:\s|\[(.+?)\])\s+\=\=\=?\s+undefined/g, '$1[$2] === null' ],
+    [ /([^\s\[]+)(?:\s|\[(.+?)\])\s+\!\=\=?\s+undefined/g, '$1[$2] !== null' ],
+    [ /([^\s]+)\s+\=\=\=?\s+undefined/g, '$1 === null' ],
+    [ /([^\s]+)\s+\!\=\=?\s+undefined/g, '$1 !== null' ],
+    [ /(.+?)\s+\=\=\=?\s+undefined/g, '$1 === null' ],
+    [ /(.+?)\s+\!\=\=?\s+undefined/g, '$1 !== null' ],
+
     [ /typeof\s+([^\s\[]+)(?:\s|\[(.+?)\])\s+\=\=\=?\s+\'string\'/g, "gettype ($1[$2]) === 'string'" ],
     [ /typeof\s+([^\s\[]+)(?:\s|\[(.+?)\])\s+\!\=\=?\s+\'string\'/g, "gettype ($1[$2]) !== 'string'" ],
     [ /typeof\s+([^\s]+)\s+\=\=\=?\s+\'string\'/g, "gettype ($1) === 'string'" ],
     [ /typeof\s+([^\s]+)\s+\!\=\=?\s+\'string\'/g, "gettype ($1) !== 'string'" ],
+
     [ /undefined/g, 'null' ],
     [ /this\.extend/g, 'array_merge' ],
     [ /this\.stringToBinary\s*\((.*)\)/g, '$1' ],
@@ -317,9 +340,9 @@ const phpRegexes = [
     [ /Math\.pow\s*\(([^\)]+)\)/g, 'pow ($1)' ],
     [ /Math\.log/g, 'log' ],
     [ /([^\(\s]+)\s+%\s+([^\s\)]+)/g, 'fmod ($1, $2)' ],
-    [ /\(([^\s]+)\.indexOf\s*\(([^\)]+)\)\s*\>\=\s*0\)/g, '(mb_strpos ($1, $2) !== false)' ],
-    [ /([^\s]+)\.indexOf\s*\(([^\)]+)\)\s*\>\=\s*0/g, 'mb_strpos ($1, $2) !== false' ],
-    [ /([^\s]+)\.indexOf\s*\(([^\)]+)\)/g, 'mb_strpos ($1, $2)' ],
+    [ /\(([^\s\(]+)\.indexOf\s*\(([^\)]+)\)\s*\>\=\s*0\)/g, '(mb_strpos ($1, $2) !== false)' ],
+    [ /([^\s\(]+)\.indexOf\s*\(([^\)]+)\)\s*\>\=\s*0/g, 'mb_strpos ($1, $2) !== false' ],
+    [ /([^\s\(]+)\.indexOf\s*\(([^\)]+)\)/g, 'mb_strpos ($1, $2)' ],
     [ /\(([^\s\(]+)\sin\s([^\)]+)\)/g, '(is_array ($2) && array_key_exists ($1, $2))' ],
     [ /([^\s]+)\.join\s*\(\s*([^\)]+?)\s*\)/g, 'implode ($2, $1)' ],
     [ 'new ccxt\\.', 'new \\ccxt\\' ], // a special case for test_exchange_datetime_functions.php (and for other files, maybe)
@@ -375,7 +398,7 @@ function createPythonClass (className, baseClass, body, methods, async = false) 
     const errorImports = []
 
     for (let error in errors) {
-        const regex = new RegExp ("[^\\']" + error + "[^\\']")
+        const regex = new RegExp ("[^\\'\"]" + error + "[^\\'\"]")
         if (bodyAsString.match (regex))
             errorImports.push ('from ccxt.base.errors import ' + error)
     }
@@ -383,7 +406,6 @@ function createPythonClass (className, baseClass, body, methods, async = false) 
     const precisionImports = []
 
     for (let constant in precisionConstants) {
-        // const regex = new RegExp ("[^\\']" + error + "[^\\']")
         if (bodyAsString.indexOf (constant) >= 0) {
             precisionImports.push ('from ccxt.base.decimal_to_precision import ' + constant)
         }
