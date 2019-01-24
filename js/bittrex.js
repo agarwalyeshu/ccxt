@@ -5,6 +5,7 @@
 const Exchange = require ('./base/Exchange');
 const { ExchangeError, ExchangeNotAvailable, AuthenticationError, InvalidOrder, InsufficientFunds, OrderNotFound, DDoSProtection, PermissionDenied, AddressPending } = require ('./base/errors');
 const { TRUNCATE, DECIMAL_PLACES } = require ('./base/functions/number');
+const {redisRead, redisWrite} = require('../../../lib/utils');
 
 //  ---------------------------------------------------------------------------
 
@@ -182,8 +183,9 @@ module.exports = class bittrex extends Exchange {
     }
 
     async fetchMarkets (params = {}) {
-        // https://github.com/ccxt/ccxt/commit/866370ba6c9cabaf5995d992c15a82e38b8ca291
-        // https://github.com/ccxt/ccxt/pull/4304
+      let cacheData = await redisRead(this.id + '|markets', 10 * 60);
+      if (cacheData) return cacheData;
+      else {
         const response = await this.publicGetMarkets ();
         const result = [];
         const markets = this.safeValue (response, 'result');
@@ -229,7 +231,9 @@ module.exports = class bittrex extends Exchange {
                 },
             });
         }
+        await redisWrite(this.id + '|markets', result);
         return result;
+      }
     }
 
     async fetchBalance (params = {}) {

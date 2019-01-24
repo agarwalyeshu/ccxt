@@ -5,6 +5,7 @@
 const Exchange = require ('./base/Exchange');
 const { ExchangeNotAvailable, ArgumentsRequired, AuthenticationError, ExchangeError, OrderNotFound, DDoSProtection, InvalidNonce, InsufficientFunds, CancelPending, InvalidOrder, InvalidAddress } = require ('./base/errors');
 const { TRUNCATE, DECIMAL_PLACES } = require ('./base/functions/number');
+const {redisRead, redisWrite} = require('../../../lib/utils');
 
 //  ---------------------------------------------------------------------------
 
@@ -248,6 +249,9 @@ module.exports = class kraken extends Exchange {
     }
 
     async fetchMarkets (params = {}) {
+      let cacheData = await redisRead(this.id + '|markets', 10 * 60);
+      if (cacheData) return cacheData;
+      else {
         let markets = await this.publicGetAssetPairs ();
         let limits = await this.fetchMinOrderAmounts ();
         let keys = Object.keys (markets['result']);
@@ -316,7 +320,9 @@ module.exports = class kraken extends Exchange {
         }
         result = this.appendInactiveMarkets (result);
         this.marketsByAltname = this.indexBy (result, 'altname');
+        await redisWrite(this.id + '|markets', result);
         return result;
+      }
     }
 
     appendInactiveMarkets (result) {

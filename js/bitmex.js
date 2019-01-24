@@ -4,6 +4,7 @@
 
 const Exchange = require ('./base/Exchange');
 const { AuthenticationError, BadRequest, DDoSProtection, ExchangeError, ExchangeNotAvailable, InsufficientFunds, InvalidOrder, OrderNotFound, PermissionDenied } = require ('./base/errors');
+const {redisRead, redisWrite} = require('../../../lib/utils');
 
 //  ---------------------------------------------------------------------------
 
@@ -150,6 +151,9 @@ module.exports = class bitmex extends Exchange {
     }
 
     async fetchMarkets (params = {}) {
+      let cacheData = await redisRead(this.id + '|markets', 10 * 60);
+      if (cacheData) return cacheData;
+      else {
         let markets = await this.publicGetInstrumentActiveAndIndices ();
         let result = [];
         for (let p = 0; p < markets.length; p++) {
@@ -213,7 +217,9 @@ module.exports = class bitmex extends Exchange {
                 'info': market,
             });
         }
+        await redisWrite(this.id + '|markets', result);
         return result;
+      }
     }
 
     async fetchBalance (params = {}) {

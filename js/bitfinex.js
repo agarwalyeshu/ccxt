@@ -5,6 +5,7 @@
 const Exchange = require ('./base/Exchange');
 const { NotSupported, DDoSProtection, AuthenticationError, PermissionDenied, ArgumentsRequired, ExchangeError, ExchangeNotAvailable, InsufficientFunds, InvalidOrder, OrderNotFound, InvalidNonce } = require ('./base/errors');
 const { SIGNIFICANT_DIGITS } = require ('./base/functions/number');
+const {redisRead, redisWrite} = require('../../../lib/utils');
 
 //  ---------------------------------------------------------------------------
 
@@ -406,6 +407,9 @@ module.exports = class bitfinex extends Exchange {
     }
 
     async fetchMarkets (params = {}) {
+      let cacheData = await redisRead(this.id + '|markets', 10 * 60);
+      if (cacheData) return cacheData;
+      else {
         let markets = await this.publicGetSymbolsDetails ();
         let result = [];
         for (let p = 0; p < markets.length; p++) {
@@ -447,7 +451,9 @@ module.exports = class bitfinex extends Exchange {
                 'info': market,
             });
         }
+        await redisWrite(this.id + '|markets', result);
         return result;
+      }
     }
 
     calculateFee (symbol, type, side, amount, price, takerOrMaker = 'taker', params = {}) {

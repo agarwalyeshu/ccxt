@@ -5,6 +5,7 @@
 const Exchange = require ('./base/Exchange');
 const { ExchangeError, ArgumentsRequired, ExchangeNotAvailable, InsufficientFunds, OrderNotFound, InvalidOrder, DDoSProtection, InvalidNonce, AuthenticationError } = require ('./base/errors');
 const { ROUND } = require ('./base/functions/number');
+const {redisRead, redisWrite} = require('../../../lib/utils');
 
 //  ---------------------------------------------------------------------------
 
@@ -303,6 +304,9 @@ module.exports = class binance extends Exchange {
     }
 
     async fetchMarkets (params = {}) {
+        let cacheData = await redisRead(this.id + '|markets', 10 * 60);
+        if (cacheData) return cacheData;
+        else {
         let response = await this.publicGetExchangeInfo ();
         if (this.options['adjustForTimeDifference'])
             await this.loadTimeDifference ();
@@ -380,7 +384,9 @@ module.exports = class binance extends Exchange {
             }
             result.push (entry);
         }
-        return result;
+            await redisWrite(this.id + '|markets', result);
+            return result;
+        }
     }
 
     calculateFee (symbol, type, side, amount, price, takerOrMaker = 'taker', params = {}) {

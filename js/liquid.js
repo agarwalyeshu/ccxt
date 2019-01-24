@@ -4,6 +4,7 @@
 
 const Exchange = require ('./base/Exchange');
 const { ExchangeError, ArgumentsRequired, InvalidNonce, OrderNotFound, InvalidOrder, InsufficientFunds, AuthenticationError, DDoSProtection } = require ('./base/errors');
+const {redisRead, redisWrite} = require('../../../lib/utils');
 
 //  ---------------------------------------------------------------------------
 
@@ -165,6 +166,9 @@ module.exports = class liquid extends Exchange {
     }
 
     async fetchMarkets (params = {}) {
+      let cacheData = await redisRead(this.id + '|markets', 10 * 60);
+      if (cacheData) return cacheData;
+      else {
         let markets = await this.publicGetProducts ();
         //
         //     [
@@ -261,7 +265,9 @@ module.exports = class liquid extends Exchange {
                 'info': market,
             });
         }
+        await redisWrite(this.id + '|markets', result);
         return result;
+      }
     }
 
     async fetchBalance (params = {}) {

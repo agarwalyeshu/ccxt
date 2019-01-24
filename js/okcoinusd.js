@@ -307,7 +307,7 @@ module.exports = class okcoinusd extends Exchange {
             'options': {
                 'marketBuyPrice': false,
                 'defaultContractType': 'this_week', // next_week, quarter
-                'warnOnFetchOHLCVLimitArgument': true,
+                'warnOnFetchOHLCVLimitArgument': false,
                 'fiats': [ 'USD', 'CNY' ],
                 'futures': {
                     'BCH': true,

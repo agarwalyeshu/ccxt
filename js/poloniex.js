@@ -4,6 +4,7 @@
 
 const Exchange = require ('./base/Exchange');
 const { ExchangeError, ExchangeNotAvailable, RequestTimeout, AuthenticationError, PermissionDenied, DDoSProtection, InsufficientFunds, OrderNotFound, OrderNotCached, InvalidOrder, AccountSuspended, CancelPending, InvalidNonce } = require ('./base/errors');
+const {redisRead, redisWrite} = require('../../../lib/utils');
 
 //  ---------------------------------------------------------------------------
 
@@ -228,6 +229,9 @@ module.exports = class poloniex extends Exchange {
     }
 
     async fetchMarkets (params = {}) {
+      let cacheData = await redisRead(this.id + '|markets', 10 * 60);
+      if (cacheData) return cacheData;
+      else {
         let markets = await this.publicGetReturnTicker ();
         let keys = Object.keys (markets);
         let result = [];
@@ -269,7 +273,9 @@ module.exports = class poloniex extends Exchange {
                 'info': market,
             }));
         }
+        await redisWrite(this.id + '|markets', result);
         return result;
+      }
     }
 
     async fetchBalance (params = {}) {

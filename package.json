@@ -1,28 +1,28 @@
 {
-  "_from": "ccxt",
+  "_from": "https://github.com/agarwalyeshu/ccxt/tarball/master",
   "_id": "ccxt@1.18.144",
   "_inBundle": false,
-  "_integrity": "sha512-eyqCKAFQ3306rCO+QftLipRCwukRZ7qDaZTVqTPoN0Q4PV5G4gnYsZzuOmkiJQjhGO6XdhoEC3EGHU8NXaAC7Q==",
+  "_integrity": "sha512-bwk7QoB1ZOI+LXsrdStoen7HDGEjKLiVqhUyZ2zmg+SPhB14xJMMaFCP3mZ5NRvOaWU8lGiEz5xmlipMoUZ8EQ==",
   "_location": "/ccxt",
-  "_phantomChildren": {},
+  "_phantomChildren": {
+    "node-fetch": "1.7.4"
+  },
   "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "ccxt",
+    "type": "remote",
+    "raw": "ccxt@https://github.com/agarwalyeshu/ccxt/tarball/master",
     "name": "ccxt",
     "escapedName": "ccxt",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
+    "rawSpec": "https://github.com/agarwalyeshu/ccxt/tarball/master",
+    "saveSpec": "https://github.com/agarwalyeshu/ccxt/tarball/master",
+    "fetchSpec": "https://github.com/agarwalyeshu/ccxt/tarball/master"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/ccxt/-/ccxt-1.18.144.tgz",
-  "_shasum": "48396d04b2b091aa68978e9b0335f412c0e5d65b",
-  "_spec": "ccxt",
-  "_where": "/Users/yeshuagarwal/WebstormProjects/testccxt",
+  "_resolved": "https://github.com/agarwalyeshu/ccxt/tarball/master",
+  "_shasum": "b4af292fde63d082761d5466fb281966fc0dd5d9",
+  "_spec": "ccxt@https://github.com/agarwalyeshu/ccxt/tarball/master",
+  "_where": "/Users/yeshuagarwal/git/lcx-terminal-backend-public",
   "author": {
     "name": "Igor Kroitor",
     "email": "igor.kroitor@gmail.com",
@@ -40,7 +40,8 @@
   "dependencies": {
     "cached-path-relative": "1.0.2",
     "crypto-js": "3.1.9-1",
-    "fetch-ponyfill": "4.1.0",
+    "node-fetch" : "https://github.com/agarwalyeshu/node-fetch/tarball/master",
+    "fetch-ponyfill": "https://github.com/agarwalyeshu/fetch-ponyfill/tarball/master",
     "opencollective": "1.0.3",
     "qs": "6.5.1"
   },

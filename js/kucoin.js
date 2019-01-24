@@ -5,6 +5,7 @@
 const Exchange = require ('./base/Exchange');
 const { ExchangeError, ArgumentsRequired, InvalidNonce, InvalidOrder, AuthenticationError, InsufficientFunds, OrderNotFound } = require ('./base/errors');
 const { TRUNCATE, ROUND } = require ('./base/functions/number');
+const {redisRead, redisWrite} = require('../../../lib/utils');
 
 //  ---------------------------------------------------------------------------
 
@@ -521,6 +522,9 @@ module.exports = class kucoin extends Exchange {
     }
 
     async fetchMarkets (params = {}) {
+      let cacheData = await redisRead(this.id + '|markets', 10 * 60);
+      if (cacheData) return cacheData;
+      else {
         let response = await this.publicGetMarketOpenSymbols ();
         if (this.options['adjustForTimeDifference'])
             await this.loadTimeDifference ();
@@ -565,7 +569,9 @@ module.exports = class kucoin extends Exchange {
                 },
             });
         }
+        await redisWrite(this.id + '|markets', result);
         return result;
+      }
     }
 
     async fetchDepositAddress (code, params = {}) {
